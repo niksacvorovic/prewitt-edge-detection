@@ -8,4 +8,4 @@ This program takes an image as an input outputs the map of all of the edges on t
 
 - C++ version: compile regularly using g++ or clang++
 
-- Rust version: coming soon...
+- Rust version: build and run regularly using cargo
