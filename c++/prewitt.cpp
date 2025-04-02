@@ -35,9 +35,9 @@ int main(int argc, char* argv[]){
             input.read((char*)&b, 1);
             input.read((char*)&g, 1);
             input.read((char*)&r, 1);
-            buffer[i].get()[j] = (unsigned char) r * 0.299 + g * 0.587 + b * 0.114;
+            buffer[i].get()[j] = r * 0.299 + g * 0.587 + b * 0.114;
         }
-        for(int j = 0; (width * 3 + j) % 4 != 0; ++j) input.seekg(input.tellg() + 1);
+        for(int j = 0; (width * 3 + j) % 4 != 0; ++j) input.seekg(input.tellg() += 1);
     }
     short convx, convy, conv;
     for(int i = 1; i < height - 1; ++i){
@@ -46,15 +46,16 @@ int main(int argc, char* argv[]){
             input.read((char*)&b, 1);
             input.read((char*)&g, 1);
             input.read((char*)&r, 1);
-            buffer[2].get()[j] = (unsigned char) r * 0.299 + g * 0.587 + b * 0.114;
+            buffer[2].get()[j] = r * 0.299 + g * 0.587 + b * 0.114;
         }
-        for(int j = 0; (width * 3 + j) % 4 != 0; ++j) input.seekg(input.tellg() + 1);
+        for(int j = 0; (width * 3 + j) % 4 != 0; ++j) input.seekg(input.tellg() += 1);
         for(int j = 1; j < width - 1; ++j){
             convx = buffer[0].get()[j + 1] + buffer[1].get()[j + 1] + buffer[2].get()[j + 1] + 
                     - buffer[0].get()[j - 1] - buffer[1].get()[j - 1] - buffer[2].get()[j - 1];
             convy = buffer[2].get()[j - 1] + buffer[2].get()[j] + buffer[2].get()[j + 1] + 
                     - buffer[0].get()[j - 1] - buffer[0].get()[j] - buffer[0].get()[j + 1];
-            conv = (unsigned char) sqrt(convx * convx + convy * convy);
+            conv = sqrt(convx * convx + convy * convy);
+            if(conv != (unsigned char) conv) conv = 255;
             for(int k = 0; k < 3; ++k){
                 output.write((char*) &conv, 1);
             }
